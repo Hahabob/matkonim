@@ -1,0 +1,88 @@
+import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { api } from "@/lib/axios";
+type Book = {
+  id: string;
+  title: string;
+  body: string;
+  createdAt: string;
+  authorId: string;
+  authorName?: string;
+};
+
+export default function HomePage() {
+  const [books, setbooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const getBooks = async () => {
+    try {
+      const { data } = await api.get<Book[]>(`/books`);
+      setbooks(data);
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to load books");
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getBooks();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100 flex items-center justify-center py-12 px-4">
+      <Card className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-blue-100 bg-white/80 backdrop-blur-md transition-all">
+        <main>
+          <h1 className="text-4xl font-extrabold mb-10 text-center text-blue-700 drop-shadow-sm">
+            Welcome to the Book App
+          </h1>
+
+          {loading ? (
+            <p className="text-center text-blue-500 text-lg animate-pulse font-medium">
+              Loading books...
+            </p>
+          ) : error ? (
+            <p className="text-center text-red-500 text-lg font-semibold">
+              {error}
+            </p>
+          ) : books.length === 0 ? (
+            <p className="text-center text-gray-500 text-base italic">
+              No Books yet. Be the first to add one!
+            </p>
+          ) : (
+            <ul className="space-y-6">
+              {books.map(({ id, title, body, createdAt }) => (
+                <li
+                  key={id}
+                  className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
+                >
+                  <h2 className="text-2xl font-bold text-blue-800 mb-2">
+                    {title}
+                  </h2>
+
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    {body.length > 150 ? `${body.slice(0, 150)}...` : body}
+                  </p>
+
+                  <div className="mt-4 flex items-center justify-between">
+                    <p className="text-xs text-gray-500 italic">
+                      {new Date(createdAt).toLocaleString()}
+                    </p>
+
+                    <button
+                      onClick={() => navigate(`/posts/${id}`)}
+                      className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </main>
+      </Card>
+    </div>
+  );
+}
