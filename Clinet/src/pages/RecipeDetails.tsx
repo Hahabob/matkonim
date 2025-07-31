@@ -11,20 +11,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 
-import { useFetchBook } from "@/hooks/useFetchBook";
-import { useUpdateBook } from "@/hooks/useUpdateHook";
-import { useDeleteBooks } from "@/hooks/deletebookHook";
+import { useFetchRecepie } from "@/hooks/useFetchBook";
+import { useUpdateRecepie } from "@/hooks/useUpdateHook";
+import { useDeleteRecepie } from "@/hooks/deletebookHook";
 
-
-export default function BookDetails() {
+export default function RecepieDetails() {
   const { id } = useParams() as { id: string };
   const navigate = useNavigate();
 
-  const { data: book, isLoading, isError, error, refetch } = useFetchBook(id);
+  const {
+    data: recepie,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useFetchRecepie(id);
 
-  const updateMutation = useUpdateBook();
+  const updateMutation = useUpdateRecepie();
 
-  const deleteMutation = useDeleteBooks();
+  const deleteMutation = useDeleteRecepie();
 
   const [isOpen, setIsOpen] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
@@ -32,11 +37,11 @@ export default function BookDetails() {
   const [localError, setLocalError] = useState("");
 
   useEffect(() => {
-    if (book) {
-      setEditedTitle(book.title);
-      setEditedBody(book.body);
+    if (recepie) {
+      setEditedTitle(recepie.title);
+      setEditedBody(recepie.body);
     }
-  }, [book]);
+  }, [recepie]);
 
   const handleDelete = () => {
     if (!id) return;
@@ -45,7 +50,7 @@ export default function BookDetails() {
         navigate("/home");
       },
       onError: () => {
-        setLocalError("Failed to delete book");
+        setLocalError("Failed to delete recepie");
       },
     });
   };
@@ -61,7 +66,7 @@ export default function BookDetails() {
           refetch();
         },
         onError: () => {
-          setLocalError("Failed to update book");
+          setLocalError("Failed to update recepie");
         },
       }
     );
@@ -79,23 +84,23 @@ export default function BookDetails() {
 
         {isLoading ? (
           <p className="text-center text-blue-500 font-medium animate-pulse">
-            Loading book...
+            Loading recepie...
           </p>
         ) : isError ? (
           <p className="text-center text-red-500 font-semibold">
             {error?.message || "Error loading post"}
           </p>
-        ) : book ? (
+        ) : recepie ? (
           <>
             <h1 className="text-4xl font-extrabold text-blue-800 mb-4">
-              {book.title}
+              {recepie.title}
             </h1>
             <p className="text-gray-700 mb-6 text-base leading-relaxed">
-              {book.body}
+              {recepie.body}
             </p>
 
             <p className="text-xs text-gray-400 italic mb-6">
-              Posted on {new Date(book.createdAt).toLocaleString()}
+              Posted on {new Date(recepie.createdAt).toLocaleString()}
             </p>
 
             {localError && (
@@ -105,13 +110,13 @@ export default function BookDetails() {
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
                 <Button className="mr-3 bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white shadow-md hover:brightness-110 transition">
-                  Edit Book
+                  Edit recepie
                 </Button>
               </DialogTrigger>
 
               <DialogContent>
                 <DialogTitle className="text-xl font-semibold mb-2">
-                  Edit Book
+                  Edit recepie
                 </DialogTitle>
                 <div className="grid gap-4 py-4">
                   <div>
@@ -155,7 +160,7 @@ export default function BookDetails() {
               disabled={deleteMutation.isPending}
               className="mt-6 bg-gradient-to-r from-red-500 to-red-700 text-white hover:brightness-110 transition"
             >
-              {deleteMutation.isPending ? "Deleting..." : " Delete Post"}
+              {deleteMutation.isPending ? "Deleting..." : " Delete recipe"}
             </Button>
           </>
         ) : null}

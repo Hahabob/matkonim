@@ -33,7 +33,7 @@ export default function Header() {
   return (
     <header className="bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white px-6 py-4 shadow-md flex justify-between items-center">
       <div className="text-2xl font-bold tracking-wide flex items-center gap-2">
-        <span>My Post App</span>
+        <span>My Recepies App</span>
       </div>
 
       <NavBar />
@@ -76,7 +76,7 @@ export function NavBar() {
               to="/books"
               className="px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 active:scale-95 shadow-sm"
             >
-              New book
+              Add a new Recepie here!
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>

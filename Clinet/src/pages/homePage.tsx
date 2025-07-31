@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/axios";
-type Book = {
+type Recepie = {
   id: string;
   title: string;
   body: string;
@@ -12,17 +12,17 @@ type Book = {
 };
 
 export default function HomePage() {
-  const [books, setbooks] = useState<Book[]>([]);
+  const [recepies, setbooks] = useState<Recepie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const getBooks = async () => {
     try {
-      const { data } = await api.get<Book[]>(`/books`);
+      const { data } = await api.get<Recepie[]>(`/recepies`);
       setbooks(data);
       setLoading(false);
     } catch (error) {
-      setError("Failed to load books");
+      setError("Failed to load recepies");
       setLoading(false);
     }
   };
@@ -35,24 +35,24 @@ export default function HomePage() {
       <Card className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-blue-100 bg-white/80 backdrop-blur-md transition-all">
         <main>
           <h1 className="text-4xl font-extrabold mb-10 text-center text-blue-700 drop-shadow-sm">
-            Welcome to the Book App
+            Welcome to the recepies App
           </h1>
 
           {loading ? (
             <p className="text-center text-blue-500 text-lg animate-pulse font-medium">
-              Loading books...
+              Loading recepies...
             </p>
           ) : error ? (
             <p className="text-center text-red-500 text-lg font-semibold">
               {error}
             </p>
-          ) : books.length === 0 ? (
+          ) : recepies.length === 0 ? (
             <p className="text-center text-gray-500 text-base italic">
-              No Books yet. Be the first to add one!
+              No recipes yet. Be the first to add one!
             </p>
           ) : (
             <ul className="space-y-6">
-              {books.map(({ id, title, body, createdAt }) => (
+              {recepies.map(({ id, title, body, createdAt }) => (
                 <li
                   key={id}
                   className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"

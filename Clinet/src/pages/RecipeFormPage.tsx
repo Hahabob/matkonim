@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useCreateBook } from "@/components/ui/Forms/CreateBookForm";
-export default function BookForm() {
+import { useCreateRecepie } from "@/components/ui/Forms/CreateRecepieForm";
+export default function RecepieForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const { mutate, isPending, isSuccess, error } = useCreateBook();
+  const { mutate, isPending, isSuccess, error } = useCreateRecepie();
 
   const navigate = useNavigate();
 
@@ -39,12 +39,12 @@ export default function BookForm() {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 flex items-center justify-center py-10 px-4">
       <Card className="w-full max-w-xl mx-auto p-10 rounded-2xl shadow-2xl border border-blue-200 bg-white/80 backdrop-blur-md">
         <h2 className="text-3xl font-bold mb-6 text-blue-700 text-center">
-          Add a new BOOK
+          Add a new recepie
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Book title
+              recepie name
             </label>
             <input
               className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
@@ -53,7 +53,7 @@ export default function BookForm() {
               required
               minLength={2}
               maxLength={50}
-              placeholder="Post title"
+              placeholder="Recepie title"
             />
           </div>
           <div>
@@ -67,18 +67,18 @@ export default function BookForm() {
               required
               minLength={10}
               maxLength={1000}
-              placeholder="What's on your mind?"
+              placeholder="recpie instruction?"
             />
           </div>
 
           {error && (
             <p className="text-sm text-red-600 font-medium">
-              Failed to add book
+              Failed to add recepie
             </p>
           )}
           {isSuccess && (
             <p className="text-sm text-green-600 font-medium">
-              Book added to the list!
+              Recepie added to the list!
             </p>
           )}
 

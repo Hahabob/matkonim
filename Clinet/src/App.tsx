@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/registerPage";
 import HomePage from "./pages/homePage";
-import BookForm from "./pages/bookFormPage";
-import BookDetails from "./pages/BookDetails";
+import RecepieForm from "./pages/RecipeFormPage";
+import RecipeDetails from "./pages/RecipeDetails";
 import Layout from "./components/layout";
 import ProtectedRoute from "./context/protectedRoutes";
 import { AuthProvider } from "./context/AuthContext";
@@ -27,21 +27,21 @@ function App() {
             }
           />
           <Route
-            path="/books"
+            path="/recepies"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <BookForm />
+                  <RecepieForm />
                 </Layout>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/books/:id"
+            path="/recepies/:id"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <BookDetails />
+                  <RecipeDetails />
                 </Layout>
               </ProtectedRoute>
             }
