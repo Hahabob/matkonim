@@ -30,8 +30,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = await api.get("/auth/me", {
         withCredentials: true,
       });
-      setUser(data.user);
-      console.log("AuthContext: user data fetched:", data.user);
+      setUser(data.data);
+      console.log("AuthContext: user data fetched:", data.data);
     } catch (err) {
       console.error("AuthContext: error fetching user:", err);
       setUser(null);
