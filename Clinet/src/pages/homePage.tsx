@@ -11,6 +11,7 @@ type Recepie = {
   authorName?: string;
 };
 
+// TODO implement react query to render recepies
 export default function HomePage() {
   const [recepies, setbooks] = useState<Recepie[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const getBooks = async () => {
     try {
-      const { data } = await api.get<Recepie[]>(`/recepies`);
+      const { data } = await api.get<Recepie[]>(`/recepie`);
       setbooks(data);
       setLoading(false);
     } catch (error) {

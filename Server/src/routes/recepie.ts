@@ -6,6 +6,7 @@ import { checkRecepieOwnership } from "../middleware/ownership";
 const router = express.Router();
 
 router.post("/create", authenticateToken, RecepieController.create);
+router.get("/", RecepieController.getAll);
 router.get("/:recepieId", RecepieController.get);
 router.patch(
   "/:recepieId",

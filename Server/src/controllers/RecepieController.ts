@@ -98,6 +98,20 @@ const RecepieController = {
       res.status(500).json({ message: "server error during delete" });
     }
   },
+  async getAll(req: Request, res: Response) {
+    try {
+      const recepies =
+        (await RecepieModel.find({}).populate("createdBy", "name")) ||
+        "no recepies yet";
+      res.json({
+        data: recepies,
+        success: true,
+      });
+    } catch (error) {
+      console.error("cant get", error);
+      res.status(500).json({ message: "server error during get function" });
+    }
+  },
 };
 
 export default RecepieController;
