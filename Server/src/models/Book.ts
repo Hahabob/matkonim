@@ -1,11 +1,9 @@
 import mongoose, { Document, Query, Schema, Types, model } from "mongoose";
 
-interface IBook extends Document {
+interface IRecepie extends Document {
   _id: Types.ObjectId;
   title: string;
-  author: Types.ObjectId;
-  publishedYear: number;
-  genre: string[];
+  content: string;
   createdBy: Types.ObjectId;
   CreatedAt: Date;
   updatedAt: Date;
