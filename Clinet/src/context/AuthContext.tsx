@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { api } from "../lib/axios";
+import { success } from "zod";
 interface User {
   name?: string;
   email: string;
@@ -29,8 +30,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = await api.get("/auth/me", {
         withCredentials: true,
       });
-      console.log("AuthContext: user data fetched:", data.user);
       setUser(data.user);
+      console.log("AuthContext: user data fetched:", data.user);
     } catch (err) {
       console.error("AuthContext: error fetching user:", err);
       setUser(null);
@@ -45,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         { email, password },
         { withCredentials: true }
       );
+      console.log(success);
       await fetchUser();
       console.log("AuthContext: login successful");
       return true;

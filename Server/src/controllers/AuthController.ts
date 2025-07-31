@@ -109,9 +109,7 @@ const AuthController = {
 
   async getMe(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const user = await UserModel.findById(req.user!.userId).populate(
-        "reviews"
-      );
+      const user = await UserModel.findById(req.user!.userId);
       if (!user) {
         res.status(404).json({ sucess: false, message: "User not found" });
         return;
