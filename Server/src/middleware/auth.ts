@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthPayload } from "../types";
 import dotenv from "dotenv";
-import { BookDocument } from "../models/Book";
+import { RecepieDocument } from "../models/Recepie";
 
 dotenv.config();
 
 export interface AuthRequest extends Request {
   user?: AuthPayload;
-  book?: BookDocument;
+  recepie?: RecepieDocument;
 }
 
 const JWT_SECRET = process.env.JWT_SECRET;

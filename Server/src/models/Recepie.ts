@@ -9,15 +9,17 @@ interface IRecepie extends Document {
   updatedAt: Date;
 }
 
-const bookSchema = new Schema<IBook>(
+const recepieSchema = new Schema<IRecepie>(
   {
     title: {
       type: String,
       require: true,
       unique: true,
     },
-    publishedYear: Number,
-    genre: [String],
+    content: {
+      type: String,
+      require: true,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -30,13 +32,7 @@ const bookSchema = new Schema<IBook>(
   }
 );
 
-bookSchema.virtual("reviews", {
-  ref: "Review",
-  localField: "_id",
-  foreignField: "book",
-});
+export type RecepieDocument = Document & IRecepie;
+const Recepie = model<IRecepie>("Book", recepieSchema);
 
-export type BookDocument = Document & IBook;
-const Book = model<IBook>("Book", bookSchema);
-
-export default Book;
+export default Recepie;

@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth";
-import bookRoutes from "./routes/book";
+import recepieRoutes from "./routes/recepie";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import mongoose from "mongoose";
 
@@ -46,7 +46,7 @@ app.use(morgan("tiny"));
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/book", bookRoutes);
+app.use("/api/recepie", recepieRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
