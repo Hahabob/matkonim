@@ -1,10 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
+type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
 
 export function useDeleteRecepie() {
-  return useMutation({
+  return useMutation<ApiResponse<null>, Error, string>({
     mutationFn: async (id: string) => {
-      const response = await api.delete(`/recepies/${id}`);
+      const response = await api.delete<ApiResponse<null>>(`/recepie/${id}`);
       return response.data;
     },
   });
