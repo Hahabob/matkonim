@@ -33,6 +33,6 @@ const recepieSchema = new Schema<IRecepie>(
 );
 
 export type RecepieDocument = Document & IRecepie;
-const Recepie = model<IRecepie>("Book", recepieSchema);
+const Recepie = model<IRecepie>("Recepie", recepieSchema);
 
 export default Recepie;
