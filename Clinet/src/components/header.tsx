@@ -73,7 +73,7 @@ export function NavBar() {
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Link
-              to="/books"
+              to="/recepie/create"
               className="px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 active:scale-95 shadow-sm"
             >
               Add a new Recepie here!
