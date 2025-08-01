@@ -5,10 +5,7 @@ import { api } from "@/lib/axios";
 type Recepie = {
   _id: string;
   title: string;
-  body: string;
-  createdAt: Date;
-  authorId: string;
-  authorName?: string;
+  content: string;
 };
 
 // TODO implement react query to render recepies
@@ -53,26 +50,26 @@ export default function HomePage() {
             </p>
           ) : (
             <ul className="space-y-6">
-              {(recepies ?? []).map(({ id, title, body, createdAt }) => (
+              {(recepies ?? []).map(({ _id, title, content }) => (
                 <li
-                  key={recepies._id}
+                  key={_id}
                   className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
                 >
                   <h2 className="text-2xl font-bold text-blue-800 mb-2">
-                    {recepie.title}
+                    {title}
                   </h2>
 
                   <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    {body
-                      ? body.length > 150
-                        ? `${body.slice(0, 150)}...`
-                        : body
+                    {content
+                      ? content.length > 150
+                        ? `${content.slice(0, 150)}...`
+                        : content
                       : ""}
                   </p>
 
                   <div className="mt-4 flex items-center justify-between">
                     <button
-                      onClick={() => navigate(`/recepies/${id}`)}
+                      onClick={() => navigate(`/recepies/${_id}`)}
                       className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
                     >
                       View Details
