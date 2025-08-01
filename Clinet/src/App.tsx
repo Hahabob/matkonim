@@ -7,14 +7,29 @@ import RecipeDetails from "./pages/RecipeDetails";
 import Layout from "./components/layout";
 import ProtectedRoute from "./context/protectedRoutes";
 import { AuthProvider } from "./context/AuthContext";
+import RedirectIfLoggedIn from "./context/redirectIfLoggedIn";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/"
+            element={
+              <RedirectIfLoggedIn>
+                <LoginPage />
+              </RedirectIfLoggedIn>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <RedirectIfLoggedIn>
+                <RegisterPage />
+              </RedirectIfLoggedIn>
+            }
+          />
 
           <Route
             path="/home"
