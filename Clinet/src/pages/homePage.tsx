@@ -5,7 +5,10 @@ import { api } from "@/lib/axios";
 type Recepie = {
   _id: string;
   title: string;
-  content: string;
+  body: string;
+  createdAt: Date;
+  authorId: string;
+  authorName?: string;
 };
 
 // TODO implement react query to render recepies
@@ -14,10 +17,10 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const getBooks = async () => {
+  const getRecepies = async () => {
     try {
-      const { data } = await api.get(`/recepie`);
-      setRecepies(data.data);
+      const response = await api.get(`/recepie`);
+      setRecepies(response.data.data);
       setLoading(false);
     } catch (error) {
       setError("Failed to load recepies");
@@ -25,7 +28,7 @@ export default function HomePage() {
     }
   };
   useEffect(() => {
-    getBooks();
+    getRecepies();
   }, []);
 
   return (
@@ -50,9 +53,9 @@ export default function HomePage() {
             </p>
           ) : (
             <ul className="space-y-6">
-              {recepies.map((recepie) => (
+              {(recepies ?? []).map(({ id, title, body, createdAt }) => (
                 <li
-                  key={recepie._id}
+                  key={recepies._id}
                   className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
                 >
                   <h2 className="text-2xl font-bold text-blue-800 mb-2">
@@ -60,14 +63,16 @@ export default function HomePage() {
                   </h2>
 
                   <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    {recepie.content.length > 150
-                      ? `${recepie.content.slice(0, 150)}...`
-                      : recepie.content}
+                    {body
+                      ? body.length > 150
+                        ? `${body.slice(0, 150)}...`
+                        : body
+                      : ""}
                   </p>
 
                   <div className="mt-4 flex items-center justify-between">
                     <button
-                      onClick={() => navigate(`/recepie/${recepie._id}`)}
+                      onClick={() => navigate(`/recepies/${id}`)}
                       className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
                     >
                       View Details

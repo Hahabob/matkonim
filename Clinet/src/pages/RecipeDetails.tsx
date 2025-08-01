@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 
-import { useFetchRecepie } from "@/hooks/useFetchBook";
+import { useFetchRecepie } from "@/hooks/useFetchRecepie";
 import { useUpdateRecepie } from "@/hooks/useUpdateHook";
 import { useDeleteRecepie } from "@/hooks/deletebookHook";
 
@@ -33,13 +33,13 @@ export default function RecepieDetails() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
-  const [editedBody, setEditedBody] = useState("");
+  const [editedContent, setEditedContent] = useState("");
   const [localError, setLocalError] = useState("");
 
   useEffect(() => {
     if (recepie) {
       setEditedTitle(recepie.title);
-      setEditedBody(recepie.body);
+      setEditedContent(recepie.content);
     }
   }, [recepie]);
 
@@ -59,7 +59,7 @@ export default function RecepieDetails() {
     if (!id) return;
 
     updateMutation.mutate(
-      { id, data: { title: editedTitle, body: editedBody } },
+      { id, data: { title: editedTitle, body: editedContent } },
       {
         onSuccess: () => {
           setIsOpen(false);
@@ -96,11 +96,11 @@ export default function RecepieDetails() {
               {recepie.title}
             </h1>
             <p className="text-gray-700 mb-6 text-base leading-relaxed">
-              {recepie.body}
+              {recepie.content}
             </p>
 
             <p className="text-xs text-gray-400 italic mb-6">
-              Posted on {new Date(recepie.createdAt).toLocaleString()}
+              Posted on {new Date(recepie.CreatedAt).toLocaleString()}
             </p>
 
             {localError && (
@@ -131,8 +131,8 @@ export default function RecepieDetails() {
                     <Label htmlFor="body-input">Body</Label>
                     <Input
                       id="body-input"
-                      value={editedBody}
-                      onChange={(e) => setEditedBody(e.target.value)}
+                      value={editedContent}
+                      onChange={(e) => setEditedContent(e.target.value)}
                     />
                   </div>
                 </div>
