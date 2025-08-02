@@ -11,7 +11,9 @@ type UpdateRecepiesParmas = {
 export function useUpdateRecepie() {
   return useMutation({
     mutationFn: async ({ id, data }: UpdateRecepiesParmas) => {
-      const response = await api.put(`/recepies/${id}`, data);
+      const response = await api.patch(`/recepie/${id}`, data, {
+        withCredentials: true,
+      });
       return response.data;
     },
   });

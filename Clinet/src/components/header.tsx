@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCurrentUser } from "@/hooks/fetchUserHook";
 import { useNavigate } from "react-router-dom";
 import {
   NavigationMenu,
@@ -7,27 +7,21 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Link } from "react-router-dom";
-
-interface User {
-  name: string;
-  email: string;
-}
+import { api } from "@/lib/axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null);
+  const queryClient = useQueryClient();
+  const { data: user, isLoading } = useCurrentUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout", null, { withCredentials: true });
+      queryClient.removeQueries({ queryKey: ["currentUser"] });
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed", err);
     }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
   };
 
   return (
@@ -38,7 +32,9 @@ export default function Header() {
 
       <NavBar />
 
-      {user && (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : user ? (
         <div className="flex items-center gap-4">
           <span className="text-sm font-medium bg-white/10 px-3 py-1 rounded-full">
             {user.name || user.email}
@@ -50,6 +46,13 @@ export default function Header() {
             Logout
           </button>
         </div>
+      ) : (
+        <Link
+          to="/"
+          className="px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 active:scale-95 shadow-sm"
+        >
+          Login
+        </Link>
       )}
     </header>
   );

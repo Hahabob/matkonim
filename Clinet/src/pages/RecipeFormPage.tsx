@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useCreateRecepie } from "@/components/ui/Forms/CreateRecepieForm";
+import { useCreateRecepie } from "@/hooks/CreateRecepieForm";
 export default function RecepieForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -12,18 +12,10 @@ export default function RecepieForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    if (!user.id) {
-      alert("User not logged in");
-      return;
-    }
-
     mutate(
       {
         title,
         body,
-        authorId: user.id,
       },
       {
         onSuccess: () => {
@@ -44,7 +36,7 @@ export default function RecepieForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              recepie name
+              Recepie name
             </label>
             <input
               className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
@@ -58,7 +50,7 @@ export default function RecepieForm() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Body
+              A short description of your favorite dish!
             </label>
             <textarea
               className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm resize-none min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
@@ -67,7 +59,7 @@ export default function RecepieForm() {
               required
               minLength={10}
               maxLength={1000}
-              placeholder="recpie instruction?"
+              placeholder="Write a short description of your favorite dish!"
             />
           </div>
 

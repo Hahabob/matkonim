@@ -42,7 +42,7 @@ function App() {
             }
           />
           <Route
-            path="/recepies"
+            path="/recepie/create"
             element={
               <ProtectedRoute>
                 <Layout>

@@ -58,6 +58,9 @@ export default function RecepieDetails() {
   const handleSaveEdit = () => {
     if (!id) return;
 
+   
+    setLocalError("");
+
     updateMutation.mutate(
       { id, data: { title: editedTitle, body: editedContent } },
       {
