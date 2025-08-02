@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 
 type RecipeData = {
   title: string;
-  body: string;
+  content: string;
 };
 
 export function useCreateRecepie() {

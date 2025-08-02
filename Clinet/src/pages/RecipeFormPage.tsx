@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCreateRecepie } from "@/hooks/CreateRecepieForm";
 export default function RecepieForm() {
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [content, setContent] = useState("");
   const { mutate, isPending, isSuccess, error } = useCreateRecepie();
 
   const navigate = useNavigate();
@@ -15,12 +15,12 @@ export default function RecepieForm() {
     mutate(
       {
         title,
-        body,
+        content,
       },
       {
         onSuccess: () => {
           setTitle("");
-          setBody("");
+          setContent("");
           navigate("/home");
         },
       }
@@ -54,8 +54,8 @@ export default function RecepieForm() {
             </label>
             <textarea
               className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-sm resize-none min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               required
               minLength={10}
               maxLength={1000}
