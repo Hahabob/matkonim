@@ -37,7 +37,7 @@ export default function Header() {
       ) : user ? (
         <div className="flex items-center gap-4">
           <span className="text-sm font-medium bg-white/10 px-3 py-1 rounded-full">
-            {user.name || user.email}
+            welcome {user.name}
           </span>
           <button
             onClick={handleLogout}

@@ -13,7 +13,7 @@ export function useCurrentUser() {
     queryKey: ["currentUser"],
     queryFn: async () => {
       const response = await api.get("/auth/me", { withCredentials: true });
-      console.log("Current user data:", response.data);
+      console.log("Current user data:", response.data.email);
       return response.data.data ?? null;
     },
     staleTime: 5 * 60 * 1000,

@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("ProtectedRoute: checking user:", user);
+    console.log("ProtectedRoute: checking user:", user?.email);
     if (!user) {
       console.log("ProtectedRoute: user not authenticated, redirecting to /");
       navigate("/", { replace: true });

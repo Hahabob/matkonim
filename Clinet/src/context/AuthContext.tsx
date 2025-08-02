@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         withCredentials: true,
       });
       setUser(data.data);
-      console.log("AuthContext: user data fetched:", data.data);
+      console.log("AuthContext: user data fetched:", data.data.email);
     } catch (err) {
       console.error("AuthContext: error fetching user:", err);
       setUser(null);
