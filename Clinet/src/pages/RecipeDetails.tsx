@@ -14,8 +14,10 @@ import { Label } from "@radix-ui/react-label";
 import { useFetchRecepie } from "@/hooks/useFetchRecepie";
 import { useUpdateRecepie } from "@/hooks/useUpdateHook";
 import { useDeleteRecepie } from "@/hooks/deletebookHook";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RecepieDetails() {
+  const { user } = useAuth();
   const { id } = useParams() as { id: string };
   const navigate = useNavigate();
 
@@ -26,6 +28,8 @@ export default function RecepieDetails() {
     error,
     refetch,
   } = useFetchRecepie(id);
+
+  console.log(user?._id, recepie?.createdBy._id);
 
   const updateMutation = useUpdateRecepie();
 
@@ -58,7 +62,6 @@ export default function RecepieDetails() {
   const handleSaveEdit = () => {
     if (!id) return;
 
-   
     setLocalError("");
 
     updateMutation.mutate(
@@ -110,61 +113,65 @@ export default function RecepieDetails() {
               <p className="text-red-600 font-semibold mb-4">{localError}</p>
             )}
 
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger asChild>
-                <Button className="mr-3 bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white shadow-md hover:brightness-110 transition">
-                  Edit recepie
-                </Button>
-              </DialogTrigger>
-
-              <DialogContent>
-                <DialogTitle className="text-xl font-semibold mb-2">
-                  Edit recepie
-                </DialogTitle>
-                <div className="grid gap-4 py-4">
-                  <div>
-                    <Label htmlFor="title-input">Title</Label>
-                    <Input
-                      id="title-input"
-                      value={editedTitle}
-                      onChange={(e) => setEditedTitle(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="body-input">Body</Label>
-                    <Input
-                      id="body-input"
-                      value={editedContent}
-                      onChange={(e) => setEditedContent(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end space-x-3">
-                  <Button
-                    variant="default"
-                    onClick={() => setIsOpen(false)}
-                    className="bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 shadow-sm px-4 py-2 rounded-xl transition-colors"
-                  >
-                    Cancel
+            {user?._id === recepie.createdBy._id && (
+              <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogTrigger asChild>
+                  <Button className="mr-3 bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white shadow-md hover:brightness-110 transition">
+                    Edit recepie
                   </Button>
-                  <Button
-                    onClick={handleSaveEdit}
-                    disabled={updateMutation.isPending}
-                    className="bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white hover:brightness-110 transition"
-                  >
-                    {updateMutation.isPending ? "Saving..." : "Save changes"}
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogTrigger>
 
-            <Button
-              onClick={handleDelete}
-              disabled={deleteMutation.isPending}
-              className="mt-6 bg-gradient-to-r from-red-500 to-red-700 text-white hover:brightness-110 transition"
-            >
-              {deleteMutation.isPending ? "Deleting..." : " Delete recipe"}
-            </Button>
+                <DialogContent>
+                  <DialogTitle className="text-xl font-semibold mb-2">
+                    Edit recepie
+                  </DialogTitle>
+                  <div className="grid gap-4 py-4">
+                    <div>
+                      <Label htmlFor="title-input">Title</Label>
+                      <Input
+                        id="title-input"
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="body-input">Body</Label>
+                      <Input
+                        id="body-input"
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end space-x-3">
+                    <Button
+                      variant="default"
+                      onClick={() => setIsOpen(false)}
+                      className="bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 shadow-sm px-4 py-2 rounded-xl transition-colors"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleSaveEdit}
+                      disabled={updateMutation.isPending}
+                      className="bg-gradient-to-r from-[#2A7B9B] to-[#57C785] text-white hover:brightness-110 transition"
+                    >
+                      {updateMutation.isPending ? "Saving..." : "Save changes"}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
+
+            {user?._id === recepie.createdBy._id && (
+              <Button
+                onClick={handleDelete}
+                disabled={deleteMutation.isPending}
+                className="mt-6 bg-gradient-to-r from-red-500 to-red-700 text-white hover:brightness-110 transition"
+              >
+                {deleteMutation.isPending ? "Deleting..." : " Delete recipe"}
+              </Button>
+            )}
           </>
         ) : null}
       </Card>

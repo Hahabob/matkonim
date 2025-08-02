@@ -8,6 +8,7 @@ import {
 import { api } from "../lib/axios";
 import { success } from "zod";
 interface User {
+  _id: string;
   name?: string;
   email: string;
 }
