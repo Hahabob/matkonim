@@ -29,8 +29,6 @@ export default function RecepieDetails() {
     refetch,
   } = useFetchRecepie(id);
 
-  console.log(user?._id, recepie?.createdBy._id);
-
   const updateMutation = useUpdateRecepie();
 
   const deleteMutation = useDeleteRecepie();
