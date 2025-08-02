@@ -9,14 +9,17 @@ import {
 import { Link } from "react-router-dom";
 import { api } from "@/lib/axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const queryClient = useQueryClient();
   const { data: user, isLoading } = useCurrentUser();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout", null, { withCredentials: true });
+      logout();
       queryClient.removeQueries({ queryKey: ["currentUser"] });
       navigate("/");
     } catch (err) {
