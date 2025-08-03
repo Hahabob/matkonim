@@ -20,5 +20,6 @@ router.delete(
   checkRecepieOwnership,
   RecepieController.delete
 );
+router.post("/:recepieId/like", authenticateToken, RecepieController.toggleLike);
 
 export default router;

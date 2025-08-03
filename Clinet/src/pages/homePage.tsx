@@ -1,86 +1,144 @@
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/axios";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
 type Recepie = {
   _id: string;
   title: string;
   content: string;
+  likes: string[];
 };
 
-// TODO implement react query to render recepies
+async function fetchRecepies(): Promise<Recepie[]> {
+  const res = await api.get("/recepie");
+  return res.data.data;
+}
+
 export default function HomePage() {
-  const [recepies, setRecepies] = useState<Recepie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const getRecepies = async () => {
+  const queryClient = useQueryClient();
+
+  const {
+    data: recepiesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["recepies"],
+    queryFn: fetchRecepies,
+  });
+
+  const [recepies, setRecepies] = useState<Recepie[]>([]);
+
+  useEffect(() => {
+    setRecepies(recepiesData ?? []);
+  }, [recepiesData]);
+
+  const toggleLike = async (recipeId: string) => {
+    if (!user) {
+      alert("Please log in to like recipes.");
+      return;
+    }
+
+    setRecepies((currentRecepies) =>
+      currentRecepies.map((recipe) => {
+        if (recipe._id !== recipeId) return recipe;
+
+        const userHasLiked = recipe.likes.includes(user._id);
+
+        return {
+          ...recipe,
+          likes: userHasLiked
+            ? recipe.likes.filter((id) => id !== user._id)
+            : [...recipe.likes, user._id],
+        };
+      })
+    );
+
     try {
-      const response = await api.get(`/recepie`);
-      setRecepies(response.data.data);
-      setLoading(false);
+      await api.post(
+        `/recepie/${recipeId}/like`,
+        {},
+        { withCredentials: true }
+      );
+      queryClient.invalidateQueries({ queryKey: ["recepies"] });
     } catch (error) {
-      setError("Failed to load recepies");
-      setLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["recepies"] });
+      alert("Failed to update like, please try again.");
     }
   };
-  useEffect(() => {
-    getRecepies();
-  }, []);
+
+  if (isLoading) {
+    return (
+      <p className="text-center text-blue-500 text-lg animate-pulse font-medium">
+        Loading recipes...
+      </p>
+    );
+  }
+
+  if (isError) {
+    return (
+      <p className="text-center text-red-500 text-lg font-semibold">
+        Failed to load recipes.
+      </p>
+    );
+  }
+
+  if (recepies.length === 0) {
+    return (
+      <p className="text-center text-gray-500 text-base italic">
+        No recipes yet. Be the first to add one!
+      </p>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100 flex items-center justify-center py-12 px-4">
-      <Card className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] border border-blue-100 bg-white/80 backdrop-blur-md transition-all">
-        <main>
-          <h1 className="text-4xl font-extrabold mb-10 text-center text-blue-700 drop-shadow-sm">
-            Welcome to the recepies App
-          </h1>
+      <div className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-lg border border-blue-100 bg-white/80 backdrop-blur-md transition-all">
+        <h1 className="text-4xl font-extrabold mb-10 text-center text-blue-700 drop-shadow-sm">
+          Welcome to the recipes App
+        </h1>
+        <ul className="space-y-6">
+          {recepies.map(({ _id, title, content, likes }) => {
+            const userHasLiked = user ? likes.includes(user._id) : false;
 
-          {loading ? (
-            <p className="text-center text-blue-500 text-lg animate-pulse font-medium">
-              Loading recepies...
-            </p>
-          ) : error ? (
-            <p className="text-center text-red-500 text-lg font-semibold">
-              {error}
-            </p>
-          ) : recepies.length === 0 ? (
-            <p className="text-center text-gray-500 text-base italic">
-              No recipes yet. Be the first to add one!
-            </p>
-          ) : (
-            <ul className="space-y-6">
-              {(recepies ?? []).map(({ _id, title, content }) => (
-                <li
-                  key={_id}
-                  className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
-                >
-                  <h2 className="text-2xl font-bold text-blue-800 mb-2">
-                    {title}
-                  </h2>
-
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    {content
-                      ? content.length > 150
-                        ? `${content.slice(0, 150)}...`
-                        : content
-                      : ""}
-                  </p>
-
-                  <div className="mt-4 flex items-center justify-between">
-                    <button
-                      onClick={() => navigate(`/recepies/${_id}`)}
-                      className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </main>
-      </Card>
+            return (
+              <li
+                key={_id}
+                className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
+              >
+                <h2 className="text-2xl font-bold text-blue-800 mb-2">
+                  {title}
+                </h2>
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  {content.length > 150
+                    ? `${content.slice(0, 150)}...`
+                    : content}
+                </p>
+                <div className="mt-4 flex items-center justify-between">
+                  <button
+                    onClick={() => navigate(`/recepies/${_id}`)}
+                    className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    onClick={() => toggleLike(_id)}
+                    className={`text-lg ${
+                      userHasLiked ? "text-red-500" : "text-gray-400"
+                    }`}
+                    aria-label={userHasLiked ? "Unlike recipe" : "Like recipe"}
+                  >
+                    {userHasLiked ? "❤️" : "🤍"} {likes.length}
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

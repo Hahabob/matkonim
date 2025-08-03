@@ -7,6 +7,7 @@ interface IRecepie extends Document {
   createdBy: Types.ObjectId;
   CreatedAt: Date;
   updatedAt: Date;
+  likes: Types.ObjectId[];
 }
 
 const recepieSchema = new Schema<IRecepie>(
@@ -24,6 +25,13 @@ const recepieSchema = new Schema<IRecepie>(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

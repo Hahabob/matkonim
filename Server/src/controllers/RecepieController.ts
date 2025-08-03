@@ -2,7 +2,7 @@ import { AuthRequest } from "../middleware/auth";
 import { Request, Response } from "express";
 import RecepieModel from "../models/Recepie";
 import UserModel from "../models/User";
-
+import { Types } from "mongoose";
 const RecepieController = {
   async create(req: AuthRequest, res: Response) {
     try {
@@ -110,6 +110,42 @@ const RecepieController = {
     } catch (error) {
       console.error("cant get", error);
       res.status(500).json({ message: "server error during get function" });
+    }
+  },
+  async toggleLike(req: AuthRequest, res: Response) {
+    try {
+      const userId = req.user!.userId;
+      const { recepieId } = req.params;
+
+      const recepie = await RecepieModel.findById(recepieId);
+      if (!recepie) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Recepie not found" });
+      }
+
+      const hasLiked = recepie.likes.some(
+        (id) => id.toString() === userId.toString()
+      );
+
+      if (hasLiked) {
+        recepie.likes = recepie.likes.filter(
+          (id) => id.toString() !== userId.toString()
+        );
+      } else {
+        recepie.likes.push(new Types.ObjectId(userId));
+      }
+
+      await recepie.save();
+
+      res.json({
+        success: true,
+        liked: !hasLiked,
+        likesCount: recepie.likes.length,
+      });
+    } catch (error) {
+      console.error("toggleLike error:", error);
+      res.status(500).json({ message: "Server error during like toggle" });
     }
   },
 };
