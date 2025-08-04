@@ -41,7 +41,6 @@ export default function HomePage() {
       alert("Please log in to like recipes.");
       return;
     }
-
     setRecepies((currentRecepies) =>
       currentRecepies.map((recipe) => {
         if (recipe._id !== recipeId) return recipe;
@@ -93,11 +92,10 @@ export default function HomePage() {
       </p>
     );
   }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-100 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-lg border border-blue-100 bg-white/80 backdrop-blur-md transition-all">
-        <h1 className="text-4xl font-extrabold mb-10 text-center text-blue-700 drop-shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 dark:from-black dark:via-purple-900 dark:to-purple-800 flex items-center justify-center py-12 px-4">
+      <div className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-2xl border border-blue-200 dark:border-purple-700 bg-white/80 dark:bg-zinc-900/90 backdrop-blur-md transition-all">
+        <h1 className="text-4xl font-extrabold mb-10 text-blue-700 dark:text-purple-300 text-center drop-shadow-sm">
           Welcome to the recipes App
         </h1>
         <ul className="space-y-6">
@@ -107,12 +105,12 @@ export default function HomePage() {
             return (
               <li
                 key={_id}
-                className="border border-blue-100 rounded-2xl p-6 bg-white/90 shadow-md hover:shadow-xl transition-all duration-200"
+                className="border border-blue-100 dark:border-purple-700 rounded-2xl p-6 bg-white/90 dark:bg-zinc-800/90 shadow-md dark:shadow-purple-700/50 hover:shadow-xl transition-all duration-200"
               >
-                <h2 className="text-2xl font-bold text-blue-800 mb-2">
+                <h2 className="text-2xl font-bold text-blue-800 dark:text-purple-300 mb-2">
                   {title}
                 </h2>
-                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                <p className="text-gray-700 dark:text-purple-200 leading-relaxed text-sm sm:text-base">
                   {content.length > 150
                     ? `${content.slice(0, 150)}...`
                     : content}
@@ -120,7 +118,7 @@ export default function HomePage() {
                 <div className="mt-4 flex items-center justify-between">
                   <button
                     onClick={() => navigate(`/recepies/${_id}`)}
-                    className="bg-gradient-to-r from-blue-500 to-green-400 text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
+                    className="bg-gradient-to-r from-blue-500 to-green-400 dark:from-purple-700 dark:to-black text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
                   >
                     View Details
                   </button>
