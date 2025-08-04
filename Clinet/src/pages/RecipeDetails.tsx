@@ -15,6 +15,7 @@ import { useFetchRecepie } from "@/hooks/useFetchRecepie";
 import { useUpdateRecepie } from "@/hooks/useUpdateHook";
 import { useDeleteRecepie } from "@/hooks/deletebookHook";
 import { useAuth } from "@/context/AuthContext";
+import { ArrowBigLeft } from "lucide-react";
 
 export default function RecepieDetails() {
   const { user } = useAuth();
@@ -139,9 +140,10 @@ export default function RecepieDetails() {
       <Card className="w-full max-w-2xl p-8 shadow-2xl border border-blue-200 dark:border-purple-700 bg-white/90 dark:bg-zinc-900/90 rounded-3xl backdrop-blur-md">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 text-blue-600 dark:text-purple-300 font-medium hover:text-blue-800 dark:hover:text-purple-400 transition"
+          className="mb-6 text-blue-600 dark:text-purple-300 font-medium hover:text-blue-800 dark:hover:text-purple-400 transition flex items-center gap-1"
         >
-          &larr; Back
+          <ArrowBigLeft className="w-5 h-5" />
+          Back
         </button>
 
         {isLoading ? (

@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
+import { NotebookTabs } from "lucide-react";
 type Recepie = {
   _id: string;
   title: string;
@@ -21,7 +21,11 @@ export default function HomePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data: recepiesData, isLoading, isError } = useQuery<Recepie[]>({
+  const {
+    data: recepiesData,
+    isLoading,
+    isError,
+  } = useQuery<Recepie[]>({
     queryKey: ["recepies"],
     queryFn: fetchRecepies,
   });
@@ -53,12 +57,16 @@ export default function HomePage() {
     );
 
     try {
-  await api.post(`/recepie/${recipeId}/like`, {}, { withCredentials: true });
-  await queryClient.invalidateQueries({ queryKey: ["recepies"] }); 
-} catch (error) {
-  await queryClient.invalidateQueries({ queryKey: ["recepies"] }); 
-  alert("Failed to update like, please try again.");
-}
+      await api.post(
+        `/recepie/${recipeId}/like`,
+        {},
+        { withCredentials: true }
+      );
+      await queryClient.invalidateQueries({ queryKey: ["recepies"] });
+    } catch (error) {
+      await queryClient.invalidateQueries({ queryKey: ["recepies"] });
+      alert("Failed to update like, please try again.");
+    }
   };
 
   if (isLoading) {
@@ -132,18 +140,20 @@ export default function HomePage() {
                 <button
                   onClick={() => navigate(`/recepies/${_id}`)}
                   className="
-                    bg-gradient-to-r from-blue-500 to-green-400
-                    dark:from-purple-700 dark:to-black
-                    text-white
-                    text-sm
-                    px-4 py-2
-                    rounded-lg
-                    shadow
-                    hover:brightness-105
-                    transition-all duration-150
-                    whitespace-nowrap
-                  "
+    bg-gradient-to-r from-blue-500 to-green-400
+    dark:from-purple-700 dark:to-black
+    text-white
+    text-sm
+    px-4 py-2
+    rounded-lg
+    shadow
+    hover:brightness-105
+    transition-all duration-150
+    whitespace-nowrap
+    flex items-center gap-2
+  "
                 >
+                  <NotebookTabs className="w-4 h-4" />
                   View Details
                 </button>
                 <button
