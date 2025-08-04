@@ -333,7 +333,6 @@ export default function RecepieDetails() {
                       </button>
                     </div>
 
-                    {/* PrepTime, CookTime, Difficulty */}
                     <div className="flex gap-4 mt-4">
                       <div>
                         <Label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300">
