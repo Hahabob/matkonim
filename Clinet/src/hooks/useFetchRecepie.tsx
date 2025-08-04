@@ -1,23 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../lib/axios";
+
+type Ingredient = {
+  name: string;
+  quantity: string;
+};
+
 type Recepie = {
-  id: string;
+  _id: string; 
   title: string;
   content: string;
   createdBy: {
     _id: string;
     name: string;
-    email: string;
+    email?: string;
   };
-  CreatedAt: Date;
-  updatedAt: Date;
+  createdAt: string; 
+  updatedAt: string;
+  likes: string[];
+  ingredients: Ingredient[];
+  steps: string[];
+  prepTime: number;
+  cookTime: number;
+  difficulty: "easy" | "medium" | "hard";
 };
+
 type ApiResponse<T> = {
   success: boolean;
   data: T;
 };
 
-export function useFetchRecepie(id?: string | undefined) {
+export function useFetchRecepie(id?: string) {
   return useQuery<Recepie, Error>({
     queryKey: ["recepies", id],
     queryFn: async () => {

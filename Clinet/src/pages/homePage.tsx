@@ -21,11 +21,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const {
-    data: recepiesData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: recepiesData, isLoading, isError } = useQuery<Recepie[]>({
     queryKey: ["recepies"],
     queryFn: fetchRecepies,
   });
@@ -42,6 +38,7 @@ export default function HomePage() {
       return;
     }
 
+    // Optimistic UI update
     setRecepies((currentRecepies) =>
       currentRecepies.map((recipe) => {
         if (recipe._id !== recipeId) return recipe;
@@ -56,16 +53,12 @@ export default function HomePage() {
     );
 
     try {
-      await api.post(
-        `/recepie/${recipeId}/like`,
-        {},
-        { withCredentials: true }
-      );
-      queryClient.invalidateQueries({ queryKey: ["recepies"] });
-    } catch (error) {
-      queryClient.invalidateQueries({ queryKey: ["recepies"] });
-      alert("Failed to update like, please try again.");
-    }
+  await api.post(`/recepie/${recipeId}/like`, {}, { withCredentials: true });
+  await queryClient.invalidateQueries({ queryKey: ["recepies"] }); 
+} catch (error) {
+  await queryClient.invalidateQueries({ queryKey: ["recepies"] }); 
+  alert("Failed to update like, please try again.");
+}
   };
 
   if (isLoading) {

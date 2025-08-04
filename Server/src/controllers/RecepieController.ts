@@ -6,7 +6,15 @@ import { Types } from "mongoose";
 const RecepieController = {
   async create(req: AuthRequest, res: Response) {
     try {
-      const { title, content } = req.body ?? {};
+      const {
+        title,
+        content,
+        ingredients = [],
+        steps = [],
+        prepTime,
+        cookTime,
+        difficulty,
+      } = req.body ?? {};
       const user = await UserModel.findById(req.user!.userId);
       if (!user) {
         res.status(400).json({ message: "User dosen't exist" });
@@ -15,6 +23,11 @@ const RecepieController = {
       const newRecepie = await RecepieModel.create({
         title,
         content,
+        ingredients,
+        steps,
+        prepTime,
+        cookTime,
+        difficulty,
         createdBy: user._id,
       });
 
@@ -52,7 +65,15 @@ const RecepieController = {
   },
   async update(req: AuthRequest, res: Response) {
     try {
-      const { title, content } = req.body;
+      const {
+        title,
+        content,
+        ingredients,
+        steps,
+        prepTime,
+        cookTime,
+        difficulty,
+      } = req.body;
       const recepie = req.recepie;
 
       if (!recepie) {
@@ -60,9 +81,13 @@ const RecepieController = {
           .status(404)
           .json({ success: false, message: "recepie not found" });
       }
-
       recepie.title = title ?? recepie.title;
       recepie.content = content ?? recepie.content;
+      recepie.ingredients = ingredients ?? recepie.ingredients;
+      recepie.steps = steps ?? recepie.steps;
+      recepie.prepTime = prepTime ?? recepie.prepTime;
+      recepie.cookTime = cookTime ?? recepie.cookTime;
+      recepie.difficulty = difficulty ?? recepie.difficulty;
 
       await recepie.save();
 
