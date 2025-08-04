@@ -61,9 +61,7 @@ export default function Header() {
         z-50 relative
       "
     >
-      {/* Desktop Layout */}
       <div className="hidden sm:flex w-full max-w-7xl mx-auto items-center justify-between gap-4">
-        {/* Logo & Home Link */}
         <div className="text-2xl font-semibold tracking-wide flex items-center gap-3">
           <Link
             to="/home"
