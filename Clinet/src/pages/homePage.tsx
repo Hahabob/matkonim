@@ -41,12 +41,11 @@ export default function HomePage() {
       alert("Please log in to like recipes.");
       return;
     }
+
     setRecepies((currentRecepies) =>
       currentRecepies.map((recipe) => {
         if (recipe._id !== recipeId) return recipe;
-
         const userHasLiked = recipe.likes.includes(user._id);
-
         return {
           ...recipe,
           likes: userHasLiked
@@ -92,18 +91,20 @@ export default function HomePage() {
       </p>
     );
   }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 dark:from-black dark:via-purple-900 dark:to-purple-800 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-4xl mx-auto p-10 rounded-3xl shadow-2xl border border-blue-200 dark:border-purple-700 bg-white/80 dark:bg-zinc-900/90 backdrop-blur-md transition-all">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 dark:from-black dark:via-purple-900 dark:to-purple-800 py-12 px-4">
+      <div className="w-full max-w-6xl mx-auto p-6 rounded-3xl shadow-2xl border border-blue-200 dark:border-purple-700 bg-white/80 dark:bg-zinc-900/90 backdrop-blur-md transition-all">
         <h1 className="text-4xl font-extrabold mb-10 text-blue-700 dark:text-purple-300 text-center drop-shadow-sm">
-          Welcome to the recipes App
+          Welcome to the Recipes App
         </h1>
-        <ul className="space-y-6">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {recepies.map(({ _id, title, content, likes }) => {
             const userHasLiked = user ? likes.includes(user._id) : false;
 
             return (
-              <li
+              <div
                 key={_id}
                 className="border border-blue-100 dark:border-purple-700 rounded-2xl p-6 bg-white/90 dark:bg-zinc-800/90 shadow-md dark:shadow-purple-700/50 hover:shadow-xl transition-all duration-200"
               >
@@ -132,10 +133,10 @@ export default function HomePage() {
                     {userHasLiked ? "❤️" : "🤍"} {likes.length}
                   </button>
                 </div>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
     </div>
   );
