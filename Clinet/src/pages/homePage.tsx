@@ -93,51 +93,80 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-green-100 dark:from-black dark:via-purple-900 dark:to-purple-800 py-12 px-4">
-      <div className="w-full max-w-6xl mx-auto p-6 rounded-3xl shadow-2xl border border-blue-200 dark:border-purple-700 bg-white/80 dark:bg-zinc-900/90 backdrop-blur-md transition-all">
-        <h1 className="text-4xl font-extrabold mb-10 text-blue-700 dark:text-purple-300 text-center drop-shadow-sm">
-          Welcome to the Recipes App
-        </h1>
+    <main
+      className="
+        min-h-screen
+        bg-gradient-to-br from-blue-100 via-white to-green-100
+        dark:from-black dark:via-purple-900 dark:to-purple-800
+        py-12 px-4
+        flex justify-center
+      "
+    >
+      <div
+        className="
+          w-full max-w-6xl
+          p-6 rounded-3xl shadow-2xl border border-blue-200 dark:border-purple-700
+          bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md transition-all
+          grid gap-6
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+        "
+      >
+        {recepies.map(({ _id, title, content, likes }) => {
+          const userHasLiked = user ? likes.includes(user._id) : false;
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recepies.map(({ _id, title, content, likes }) => {
-            const userHasLiked = user ? likes.includes(user._id) : false;
-
-            return (
-              <div
-                key={_id}
-                className="border border-blue-100 dark:border-purple-700 rounded-2xl p-6 bg-white/90 dark:bg-zinc-800/90 shadow-md dark:shadow-purple-700/50 hover:shadow-xl transition-all duration-200"
-              >
-                <h2 className="text-2xl font-bold text-blue-800 dark:text-purple-300 mb-2">
-                  {title}
-                </h2>
-                <p className="text-gray-700 dark:text-purple-200 leading-relaxed text-sm sm:text-base">
-                  {content.length > 150
-                    ? `${content.slice(0, 150)}...`
-                    : content}
-                </p>
-                <div className="mt-4 flex items-center justify-between">
-                  <button
-                    onClick={() => navigate(`/recepies/${_id}`)}
-                    className="bg-gradient-to-r from-blue-500 to-green-400 dark:from-purple-700 dark:to-black text-white text-sm px-4 py-2 rounded-lg shadow hover:brightness-105 transition-all duration-150"
-                  >
-                    View Details
-                  </button>
-                  <button
-                    onClick={() => toggleLike(_id)}
-                    className={`text-lg ${
-                      userHasLiked ? "text-red-500" : "text-gray-400"
-                    }`}
-                    aria-label={userHasLiked ? "Unlike recipe" : "Like recipe"}
-                  >
-                    {userHasLiked ? "❤️" : "🤍"} {likes.length}
-                  </button>
-                </div>
+          return (
+            <article
+              key={_id}
+              className="
+                flex flex-col justify-between
+                border border-blue-100 dark:border-purple-700
+                rounded-2xl
+                p-6
+                bg-white/90 dark:bg-zinc-800/90
+                shadow-md dark:shadow-purple-700/50
+                hover:shadow-xl transition-shadow duration-200
+              "
+            >
+              <h2 className="text-xl font-bold text-blue-800 dark:text-purple-300 mb-3">
+                {title}
+              </h2>
+              <p className="text-gray-700 dark:text-purple-200 text-sm leading-relaxed flex-grow">
+                {content.length > 150 ? `${content.slice(0, 150)}...` : content}
+              </p>
+              <div className="mt-6 flex items-center justify-between">
+                <button
+                  onClick={() => navigate(`/recepies/${_id}`)}
+                  className="
+                    bg-gradient-to-r from-blue-500 to-green-400
+                    dark:from-purple-700 dark:to-black
+                    text-white
+                    text-sm
+                    px-4 py-2
+                    rounded-lg
+                    shadow
+                    hover:brightness-105
+                    transition-all duration-150
+                    whitespace-nowrap
+                  "
+                >
+                  View Details
+                </button>
+                <button
+                  onClick={() => toggleLike(_id)}
+                  aria-label={userHasLiked ? "Unlike recipe" : "Like recipe"}
+                  className={`text-xl ${
+                    userHasLiked ? "text-red-500" : "text-gray-400"
+                  } select-none`}
+                >
+                  {userHasLiked ? "❤️" : "🤍"} {likes.length}
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </article>
+          );
+        })}
       </div>
-    </div>
+    </main>
   );
 }
