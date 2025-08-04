@@ -10,7 +10,17 @@ import { api } from "@/lib/axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "./themeProvider";
-import { Moon, Sun, Laptop, Home, LogOut, Menu, X } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Laptop,
+  Home,
+  LogOut,
+  Menu,
+  X,
+  User,
+  Pencil,
+} from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -85,8 +95,9 @@ export default function Header() {
               className="text-sm font-semibold text-gray-900 dark:text-gray-200 bg-gradient-to-r from-teal-200 to-cyan-300 dark:from-teal-700 dark:to-cyan-800 px-4 py-2 rounded-full shadow-sm hover:shadow-teal-500 dark:hover:shadow-cyan-700 transition ease-in-out flex items-center gap-2 select-none whitespace-nowrap"
               aria-label={`Welcome ${user?.name ?? "guest"}`}
             >
-              <span className="capitalize">
-                🌟 Welcome {user?.name ?? "guest"}
+              <span className="flex items-center gap-2 capitalize">
+                <User className="w-4 h-4 text-gray-800 dark:text-gray-200" />
+                Welcome {user?.name ?? "guest"}
               </span>
             </span>
 
@@ -165,8 +176,9 @@ export default function Header() {
           </div>
         ) : user ? (
           <div className="flex items-center justify-center mb-3">
-            <span className="text-sm font-semibold text-gray-900 dark:text-gray-200 bg-gradient-to-r from-teal-200 to-cyan-300 dark:from-teal-700 dark:to-cyan-800 px-4 py-2 rounded-full shadow-sm">
-              🌟 Welcome {user?.name ?? "guest"}
+            <span className="flex items-center gap-2 capitalize">
+              <User className="w-4 h-4 text-gray-800 dark:text-gray-200" />
+              Welcome {user?.name ?? "guest"}
             </span>
           </div>
         ) : null}
@@ -183,10 +195,11 @@ export default function Header() {
               </Link>
               <Link
                 to="/recepie/create"
-                className="px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 text-center"
                 onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition hover:bg-white/20"
               >
-                Add a new Recipe here!
+                <Pencil className="w-4 h-4" />
+                <span>Add a new Recipe</span>
               </Link>
             </div>
 
@@ -270,8 +283,9 @@ export function NavBar() {
           <NavigationMenuLink asChild>
             <Link
               to="/recepie/create"
-              className="px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 active:scale-95 shadow-sm whitespace-nowrap"
+              className="flex flex-row items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white font-semibold transition-all duration-200 hover:bg-white/20 active:scale-95 shadow-sm whitespace-nowrap"
             >
+              <Pencil className="w-4 h-4" />
               Add a new Recipe here!
             </Link>
           </NavigationMenuLink>

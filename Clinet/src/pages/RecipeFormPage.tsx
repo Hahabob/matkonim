@@ -2,6 +2,17 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useCreateRecepie } from "@/hooks/CreateRecepieForm";
+import {
+  Pencil,
+  SquarePlus,
+  Trash,
+  Clock,
+  Package,
+  SlidersHorizontal,
+  List,
+  Croissant,
+  ChefHat,
+} from "lucide-react";
 
 export default function RecepieForm() {
   const [title, setTitle] = useState("");
@@ -32,7 +43,6 @@ export default function RecepieForm() {
   const removeIngredient = (index: number) => {
     setIngredients(ingredients.filter((_, i) => i !== index));
   };
-
 
   const addStep = () => {
     setSteps([...steps, ""]);
@@ -81,9 +91,9 @@ export default function RecepieForm() {
           Add a new recipe
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
-          
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-purple-300 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-purple-300 mb-1 flex items-center gap-1">
+              <Croissant  className="w-5 h-5 text-gray-600 dark:text-purple-400" />
               Recipe Name
             </label>
             <input
@@ -97,9 +107,9 @@ export default function RecepieForm() {
             />
           </div>
 
-         
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-purple-300 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-purple-300 mb-1 flex items-center gap-1">
+              <ChefHat className="w-5 h-5 text-gray-600 dark:text-purple-400" />
               Short Description
             </label>
             <textarea
@@ -115,11 +125,12 @@ export default function RecepieForm() {
 
           {/* Ingredients */}
           <div>
-            <label className="block font-semibold mb-2 text-gray-700 dark:text-purple-300">
+            <label className="block font-semibold mb-2 text-gray-700 dark:text-purple-300 flex items-center gap-1">
+              <Package className="w-4 h-4 text-gray-600 dark:text-purple-400" />
               Ingredients
             </label>
             {ingredients.map((ingredient, i) => (
-              <div key={i} className="flex gap-2 mb-2">
+              <div key={i} className="flex gap-2 mb-2 items-center">
                 <input
                   type="text"
                   placeholder="Name"
@@ -142,22 +153,28 @@ export default function RecepieForm() {
                   <button
                     type="button"
                     onClick={() => removeIngredient(i)}
-                    className="btn-red"
+                    className="btn-red flex items-center justify-center"
                     aria-label="Remove ingredient"
                   >
-                    &times;
+                    <Trash className="w-5 h-5" />
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={addIngredient} className="btn-blue">
-              + Add Ingredient
+            <button
+              type="button"
+              onClick={addIngredient}
+              className="btn-blue flex items-center gap-2"
+            >
+              <SquarePlus className="w-5 h-5" />
+              Add Ingredient
             </button>
           </div>
 
           {/* Steps */}
           <div>
-            <label className="block font-semibold mb-2 text-gray-700 dark:text-purple-300">
+            <label className="block font-semibold mb-2 text-gray-700 dark:text-purple-300 flex items-center gap-1">
+              <List className="w-4 h-4 text-gray-600 dark:text-purple-400" />
               Steps
             </label>
             {steps.map((step, i) => (
@@ -173,22 +190,28 @@ export default function RecepieForm() {
                   <button
                     type="button"
                     onClick={() => removeStep(i)}
-                    className="btn-red"
+                    className="btn-red flex items-center justify-center"
                     aria-label="Remove step"
                   >
-                    &times;
+                    <Trash className="w-5 h-5" />
                   </button>
                 )}
               </div>
             ))}
-            <button type="button" onClick={addStep} className="btn-blue">
-              + Add Step
+            <button
+              type="button"
+              onClick={addStep}
+              className="btn-blue flex items-center gap-2"
+            >
+              <SquarePlus className="w-5 h-5" />
+              Add Step
             </button>
           </div>
 
           <div className="flex gap-4">
             <div>
-              <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300">
+              <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300 flex items-center gap-1">
+                <Clock className="w-4 h-4 text-gray-600 dark:text-purple-400" />
                 Prep Time (minutes)
               </label>
               <input
@@ -202,7 +225,8 @@ export default function RecepieForm() {
             </div>
 
             <div>
-              <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300">
+              <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300 flex items-center gap-1">
+                <Clock className="w-4 h-4 text-gray-600 dark:text-purple-400" />
                 Cook Time (minutes)
               </label>
               <input
@@ -217,7 +241,8 @@ export default function RecepieForm() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300">
+            <label className="block font-semibold mb-1 text-gray-700 dark:text-purple-300 flex items-center gap-1">
+              <SlidersHorizontal className="w-4 h-4 text-gray-600 dark:text-purple-400" />
               Difficulty
             </label>
             <select
@@ -248,8 +273,9 @@ export default function RecepieForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full bg-gradient-to-r from-blue-500 to-green-500 dark:from-purple-700 dark:to-black text-white py-2 px-4 rounded-xl font-semibold hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="w-full bg-gradient-to-r from-blue-500 to-green-500 dark:from-purple-700 dark:to-black text-white py-2 px-4 rounded-xl font-semibold hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
+            <Pencil className="w-5 h-5" />
             {isPending ? "Submitting..." : "Create Recipe"}
           </button>
         </form>
